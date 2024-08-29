@@ -26,3 +26,23 @@
 ## Services
 
 `Pod`에 접근하는데 중요하다. 쿠버네티스 세계에서 특정 `Pod`를 외부에 노출하여 특정 IP주소 또는 도메인으로 특정 `Pod`에 연결할 수 있도록하는 용어이다.
+
+## 주의사항
+
+쿠버네티스는 인프라에 관심을 두지 않는다.
+
+## 설치
+
+- kubectl
+
+  클러스터에 명령을 보내기위한 도구
+
+  brew install kubectl
+
+- minikube
+
+  쿠버네티스를 가지고 놀고 테스트하기 위해 로컬에 설치하는 도구
+
+  brew install minikube
+
+  minikube start --driver=docker
