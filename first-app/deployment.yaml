@@ -1,0 +1,24 @@
+apiVersion: apps/v1 # 최신 api 버전 사용
+kind: Deployment # 생성하려는 쿠버네티스 객체의 종류
+
+metadata:
+  name: sencond-app-deployment # 객체명
+
+spec: # deployment를 구성하는 법을 정의함
+  replicas: 1 # pod의 갯수 default 1
+
+  selector:
+    matchLabels:
+      app: second-app # 선택할 pod의 label
+      tier: backend # 선택할 pod의 label
+
+  template: # pod에 기본적으로 실행할 이미지 정의
+    metadata: # pod의 metadata
+      labels:
+        app: second-app # pod의 label
+        tier: backend # pod의 label
+
+    spec: # pod의 spec
+      containers:
+        - name: second-node # 컨테이너 이름
+          image: kjw4211/kub-first-app:3 # 실행할 이미지
