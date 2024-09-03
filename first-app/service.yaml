@@ -3,6 +3,8 @@ kind: Service
 
 metadata:
   name: backend
+  labels:
+    group: example
 spec:
   selector:
     app: second-app # pod의 label

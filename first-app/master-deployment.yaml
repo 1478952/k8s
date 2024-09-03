@@ -1,10 +1,26 @@
+# 서비스를 먼저 배치하여 해당 리소스가 먼저 생성되도록 하는게 좋다.
+apiVersion: "v1"
+kind: Service
+
+metadata:
+  name: backend
+spec:
+  selector:
+    app: second-app # pod의 label
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 8080
+    # - protocol: "TCP"
+    #   port: 443
+    #   targetPort: 443
+  type: LoadBalancer
+--- # 구분선 무조건 세개의 대시
 apiVersion: apps/v1 # 최신 api 버전 사용
 kind: Deployment # 생성하려는 쿠버네티스 객체의 종류
 
 metadata:
   name: sencond-app-deployment # 객체명
-  labels:
-    group: example
 
 spec: # deployment를 구성하는 법을 정의함
   replicas: 1 # pod의 갯수 default 1
@@ -13,8 +29,6 @@ spec: # deployment를 구성하는 법을 정의함
     matchLabels:
       app: second-app # 선택할 pod의 label
       tier: backend # 선택할 pod의 label
-    # matchExpressions:
-    #   - { key: app, operator: In, values: [second-app, first-app] }
 
   template: # pod에 기본적으로 실행할 이미지 정의
     metadata: # pod의 metadata
@@ -26,10 +40,3 @@ spec: # deployment를 구성하는 법을 정의함
       containers:
         - name: second-node # 컨테이너 이름
           image: kjw4211/kub-first-app:3 # 실행할 이미지
-          imagePullPolicy: Always # 항상 이미지를 가져옴
-          livenessProbe: # 컨테이너가 구동되어 실행중인지 검사
-            httpGet:
-              path: /
-              port: 8080
-            periodSeconds: 3
-            initialDelaySeconds: 5
