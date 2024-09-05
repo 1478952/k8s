@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+        - name: story
+          image: kjw4211/kub-data-demo:1
+          volumeMounts: # 볼륨마운트
+            - mountPath: /app/story # 마운트할 컨테이너 내부의 경로
+              name: story-volume # 볼륨이름
+      volumes: # 볼륨설정
+        - name: story-volume # 볼륨이름
+          # emptyDir: {} # 특정 구성은 없으니 일반적으로 충분한 모든 디폴트설정과 함께 이 유형을 그대로 사용하기를 원한다.
+          hostPath: # 호스트 경로를 사용하는 볼륨
+            path: /data
+            type: DirectoryOrCreate # 호스트 경로가 없으면 생성
