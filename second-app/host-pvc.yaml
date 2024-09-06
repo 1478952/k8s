@@ -1,0 +1,13 @@
+# hostPath 유형인 영구볼륨의 claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: host-pvc
+spec:
+  volumeName: host-pv
+  accessModes:
+    - ReadWriteOnce # 단일 노드에 대해서만 I/O를 허용
+  storageClassName: standard # default storage class
+  resources:
+    requests:
+      storage: 1Gi # capacity에 대응함 더 많이는 지정하지못한다.

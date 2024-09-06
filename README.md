@@ -106,6 +106,12 @@ docerhub와 같은 레지스트리에 이미지가 등록되어야한다.
 - deployment 삭제
   `kubectl delete deployment {deployment 명}`
 
+- storage class 조회
+  `kubectl get sc`
+
+- 영구볼륨 리스트 조회
+  `kubectl get pv`
+
 ### 선언적 방식
 
 `kubectl apply -f config.yaml`
@@ -134,6 +140,8 @@ docerhub와 같은 레지스트리에 이미지가 등록되어야한다.
   - pod를 그룹화하고 공유주소, 공유ip 주소를 제공한다. 변경되지 않음. 클러스터 외부에도 노출가능
 - Volume
 - ...
+- Storage Class
+  - 관리자에게 스토리지 관리 방법과 볼륨 구성 방법을 세부적으로 제어할 수 있게 해준다.
 
 ## 볼륨, 볼륨 클레임
 
@@ -148,3 +156,37 @@ pod의 일부로 시작될 컨테이너에 볼륨을 탑재해야 한다는 지�
 - pod의 일부이기 때문에 pod의 수명에 따라 다르다.
 - 컨테이너를 다시 시작하고 제거해도 살아남는다.
 - pod가 파괴되면 볼륨도 제거됨.
+
+### 영구 볼륨(Persistent Volume)
+
+pod와 node에 독립적이다.
+클러스터 내에 새 리소스, 새 엔터티를 가지게 되며 노드 및 pod에서 분리된다.
+PV Claim이라는것을 만들어 pod의 일부에 추가한다.
+pv에 도달하여 엑세스요청이 가능함.
+
+### 볼륨 vs 영구볼륨
+
+- 어떤 볼륨을 사용하는 볼륨을 통해 데이터를 유지할 수 있다.
+
+#### 볼륨
+
+- pod와는 별개가 아니다.
+- 각각의 pod에 연결되며 그들이 생명주기가 된다.
+- pod가 삭제되면 볼륨도 지워진다.
+- pod를 정의할 때와 동일한 파일에 볼륨 구성을 정의하고 기록한다.
+- 글로벌 수준에서 관리하기가 어렵다.
+
+#### 영구볼륨
+
+- 클러스터의 standalone resource이다
+- 특정 pod에 연결되지 않는다.
+- pvc로 연결된다.
+- 재사용이 쉽다. 작성을 반복하지않아도됨.
+- 글로벌 수준에서 관리가 가능하다.
+
+## 환경변수
+
+configmap을 사용하여 값을 분리할수있다.
+
+`kubectl apply -f environment.yaml`
+`kubectl get configmap`
